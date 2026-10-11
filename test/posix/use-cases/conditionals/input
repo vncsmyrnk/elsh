@@ -1,0 +1,23 @@
+if true; then
+  echo "this should be printed"
+elif false; then
+  echo "unreachable"
+else
+  echo "unreachable"
+fi
+
+if false; then
+  echo "unreachable"
+elif true; then
+  echo "this should be printed"
+else
+  echo "unreachable"
+fi
+
+if false; then
+  echo "unreachable"
+elif false; then
+  echo "unreachable"
+else
+  echo "this should be printed"
+fi
