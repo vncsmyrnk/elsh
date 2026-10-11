@@ -4,6 +4,7 @@ const process = std.process;
 const mem = std.mem;
 const fs = std.fs;
 const debug = std.debug;
+const fmt = std.fmt;
 const defaultShell = "dash";
 
 fn usage(arg0: []const u8) void {
@@ -68,13 +69,18 @@ pub fn main(init: std.process.Init) !void {
 
         const term = try child.wait(io);
         switch (term) {
-            .exited => {
-                debug.print("output for {s} generated successfully\n", .{use_case_name});
-            },
+            .exited => {},
             else => |t| {
                 debug.print("{s} failed with {c}", .{ argv[0], @as(u8, @truncate(@intFromEnum(t))) });
                 std.process.exit(1);
             },
         }
+
+        const result = try fmt.allocPrint(arena,
+            \\{{
+            \\  "exit_code": {d}
+            \\}}
+        , .{term.exited});
+        try use_case_dir.writeFile(io, .{ .sub_path = "results.json", .data = result });
     }
 }
