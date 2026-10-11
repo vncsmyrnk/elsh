@@ -78,11 +78,6 @@ pub fn main(init: std.process.Init) !void {
             },
         }
 
-        const result = try fmt.allocPrint(arena,
-            \\{{
-            \\  "exit_code": {d}
-            \\}}
-        , .{term.exited});
-        try use_case_dir.writeFile(io, .{ .sub_path = "results.json", .data = result });
+        try use_case_dir.writeFile(io, .{ .sub_path = "expected-exit-code", .data = try fmt.allocPrint(arena, "{d}", .{term.exited}) });
     }
 }

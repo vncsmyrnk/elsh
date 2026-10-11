@@ -2,4 +2,3 @@
 /zig*
 /.test-out
 expected-*
-results.json
