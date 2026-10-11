@@ -1,0 +1,4 @@
+/.zig*
+/zig*
+/.test-out
+expected-output
