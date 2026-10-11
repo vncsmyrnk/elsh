@@ -4,7 +4,7 @@ const process = std.process;
 const mem = std.mem;
 const fs = std.fs;
 const debug = std.debug;
-const defaultShell = "bash";
+const defaultShell = "dash";
 
 fn usage(arg0: []const u8) void {
     debug.print(
