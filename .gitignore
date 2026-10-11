@@ -1,5 +1,5 @@
 /.zig*
 /zig*
 /.test-out
-expected-output
+expected-*
 results.json

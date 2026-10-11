@@ -62,8 +62,10 @@ pub fn main(init: std.process.Init) !void {
             process.exit(1);
         };
 
-        const output_file = try use_case_dir.createFile(io, "expected-output", .{ .truncate = true });
-        const spawn_options: process.SpawnOptions = .{ .argv = &argv, .cwd = .{ .dir = use_case_wd }, .stdin = .ignore, .stdout = .{ .file = output_file }, .stderr = .{ .file = output_file } };
+        const stdout_file = try use_case_dir.createFile(io, "expected-stdout", .{ .truncate = true });
+        const stderr_file = try use_case_dir.createFile(io, "expected-stderr", .{ .truncate = true });
+
+        const spawn_options: process.SpawnOptions = .{ .argv = &argv, .cwd = .{ .dir = use_case_wd }, .stdin = .ignore, .stdout = .{ .file = stdout_file }, .stderr = .{ .file = stderr_file } };
         var child = try process.spawn(io, spawn_options);
         defer child.kill(io);
 
