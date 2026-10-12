@@ -60,6 +60,26 @@ pub fn build(b: *std.Build) void {
     const test_posix_runner_step = b.step("test-posix", "Run POSIX tests");
     test_posix_runner_step.dependOn(&test_posix_runner_run.step);
 
+    const test_posix_pty_exe = b.addExecutable(.{
+        .name = "elsh-test-posix-pty",
+        .root_module = b.createModule(.{
+            .root_source_file = b.path("test/posix/tools/pty.zig"),
+            .target = target,
+            .optimize = optimize,
+            .imports = &.{},
+        }),
+    });
+
+    b.installArtifact(test_posix_pty_exe);
+
+    const test_posix_pty_run = b.addRunArtifact(test_posix_pty_exe);
+    const test_posix_pty_step = b.step("pty", "");
+    test_posix_pty_step.dependOn(&test_posix_pty_run.step);
+
+    if (b.args) |args| {
+        test_posix_pty_run.addArgs(args);
+    }
+
     const mod_tests = b.addTest(.{
         .root_module = mod,
     });
