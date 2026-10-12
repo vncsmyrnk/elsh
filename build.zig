@@ -46,6 +46,20 @@ pub fn build(b: *std.Build) void {
     const test_posix_output_generator_step = b.step("posix-output-generator", "Generate standard output reference for POSIX test use cases");
     test_posix_output_generator_step.dependOn(&test_posix_output_generator_run.step);
 
+    const test_posix_runner_exe = b.addExecutable(.{
+        .name = "elsh-test-posix-runner",
+        .root_module = b.createModule(.{
+            .root_source_file = b.path("test/posix/tools/runner.zig"),
+            .target = target,
+            .optimize = optimize,
+            .imports = &.{},
+        }),
+    });
+    const test_posix_runner_run = b.addRunArtifact(test_posix_runner_exe);
+    test_posix_runner_run.addArgs(&.{"dash"});
+    const test_posix_runner_step = b.step("test-posix", "Run POSIX tests");
+    test_posix_runner_step.dependOn(&test_posix_runner_run.step);
+
     const mod_tests = b.addTest(.{
         .root_module = mod,
     });
